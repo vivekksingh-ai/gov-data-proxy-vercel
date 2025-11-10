@@ -1,5 +1,4 @@
 // api/eia/series.js
-// Proxy to EIA series endpoint: /api/eia/series
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 
@@ -55,8 +54,8 @@ module.exports = async (req, res) => {
     if (!EIA_KEY) return res.status(500).json({ error: 'EIA_KEY_not_set' });
     params['api_key'] = EIA_KEY;
 
-    // if user supplied series_id in body or query, forward to /series or other EIA paths by appending /series
-    const url = `${EIA_BASE}/series?${buildQuery(params)}`;
+    // Use EIA v2 series endpoint
+    const url = `${EIA_BASE}/v2/series?${buildQuery(params)}`;
     return forwardGET(res, url);
   } catch (err) {
     console.error('eia/series internal error', err && err.stack);
