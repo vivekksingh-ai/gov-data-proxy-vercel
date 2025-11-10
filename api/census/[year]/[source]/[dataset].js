@@ -1,5 +1,4 @@
 // api/census/[year]/[source]/[dataset].js
-// Proxy for generic Census year-based dataset: /api/census/{year}/{source}/{dataset}
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 
@@ -41,8 +40,8 @@ async function forwardGET(res, url){
 
 module.exports = async (req, res) => {
   try {
-    const fullPath = req.url.split('?')[0]; // /api/census/2019/acs/acs5
-    const sub = fullPath.replace('/api/census',''); // /2019/acs/acs5
+    const fullPath = req.url.split('?')[0];
+    const sub = fullPath.replace('/api/census','');
     const query = Object.assign({}, req.query || {});
     const body = await readJsonBody(req);
     const params = Object.assign({}, query, body);
