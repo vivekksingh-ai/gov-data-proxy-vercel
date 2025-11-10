@@ -1,5 +1,4 @@
 // api/fhfa/master_index.js
-// Returns FHFA HPI master XML file
 const fetch = require('node-fetch');
 
 const FHFA_BASE = "https://www.fhfa.gov";
