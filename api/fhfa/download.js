@@ -1,5 +1,4 @@
 // api/fhfa/download.js
-// Proxy to download a specific FHFA file: /api/fhfa/download?file=<path>
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 
