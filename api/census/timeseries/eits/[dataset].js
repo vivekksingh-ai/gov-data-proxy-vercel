@@ -1,5 +1,4 @@
 // api/census/timeseries/eits/[dataset].js
-// Proxy for Census EITS timeseries dataset (e.g. /api/census/timeseries/eits/mrts)
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 
@@ -41,7 +40,6 @@ async function forwardGET(res, url){
 
 module.exports = async (req, res) => {
   try {
-    // path will be like /api/census/timeseries/eits/<dataset>
     const fullPath = req.url.split('?')[0];
     const dataset = fullPath.replace('/api/census/timeseries/eits/','');
     const query = Object.assign({}, req.query || {});
