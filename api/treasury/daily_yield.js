@@ -1,5 +1,4 @@
 // api/treasury/daily_yield.js
-// Proxy to Treasury Daily Treasury Yield Curve endpoint
 const fetch = require('node-fetch');
 const { URLSearchParams } = require('url');
 
@@ -51,7 +50,8 @@ module.exports = async (req, res) => {
       if (!token || token !== PROXY_SECRET) return res.status(401).json({ error: 'missing_or_invalid_proxy_auth' });
     }
 
-    const url = `${TREASURY_BASE}/services/api/fiscal_service/v1/accounting/od/daily_treasury_yield_curve?${buildQuery(params)}`;
+    // Use FiscalData v2 yield_curve_rates path
+    const url = `${TREASURY_BASE}/services/api/fiscal_service/v2/accounting/od/yield_curve_rates?${buildQuery(params)}`;
     return forwardGET(res, url);
   } catch (err) {
     console.error('treasury/daily_yield internal error', err && err.stack);
