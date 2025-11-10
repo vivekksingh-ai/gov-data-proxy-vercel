@@ -18,13 +18,31 @@ async function readJsonBody(req) {
     return out;
   }
 }
+// replace the existing buildQuery function with this special-case version
 function buildQuery(params){
+  // Append everything except 'get' to URLSearchParams so they are encoded properly
   const sp = new URLSearchParams();
-  Object.keys(params||{}).forEach(k=>{
-    if (params[k] !== undefined && params[k] !== null && params[k] !== "") sp.append(k, String(params[k]));
+  Object.keys(params || {}).forEach(k => {
+    if (k === 'get') return; // skip get (we will append it raw)
+    const v = params[k];
+    if (v !== undefined && v !== null && v !== "") sp.append(k, String(v));
   });
-  return sp.toString();
+
+  // Build the base query
+  let qs = sp.toString();
+
+  // If user provided a 'get' param, append it WITHOUT encoding commas.
+  // But still trim whitespace.
+  if (params && params.get) {
+    const getRaw = String(params.get).replace(/\s+/g, '');
+    // if qs is non-empty, add ampersand
+    qs += (qs.length ? '&' : '') + 'get=' + encodeURIComponent(getRaw).replace(/%2C/g, ',');
+    // We encode first then convert %2C back to raw comma to match Census example.
+  }
+
+  return qs;
 }
+
 async function forwardGET(res, url){
   try {
     const r = await fetch(url, { method: 'GET' });
